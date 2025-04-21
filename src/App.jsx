@@ -20,15 +20,17 @@ const AppContainer = styled.div`
 `;
 
 const MainContent = styled.div`
-  margin-left: ${props => (props.isSidebarHovered ? '200px' : '60px')};
-  padding: 24px;
+  margin:8px;
+  margin-left: ${props => (props.isSidebarHovered ? '200px' : '68px')};
+  padding: 0 8px;
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${props => props.theme.colors.innerBackground};
   transition: margin-left 0.3s ease;
-
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 8px;
   @media (max-width: 768px) {
     margin-left: 74px;
   }
@@ -100,12 +102,12 @@ function Dashboard({ appData, error, moodHistory, handleMoodSelect }) {
           <RingsContainer>
             <ProgressRing
               rings={[
-                { value:appData.today.steps, max:appData.today.goals.steps , label:"Steps", unit:"cop" },
-                { value:appData.today.calories , max: appData.today.goals.calories , label:"Calories", unit:"kg" },
-                { value:appData.today.activeMinutes , max: appData.today.goals.activeMinutes , label:"Active Minutes", unit:"" }
+                { value: appData.today.steps, max: appData.today.goals.steps, label: "Steps", unit: "cop" },
+                { value: appData.today.calories, max: appData.today.goals.calories, label: "Calories", unit: "kg" },
+                { value: appData.today.activeMinutes, max: appData.today.goals.activeMinutes, label: "Active Minutes", unit: "" }
               ]}
-              ></ProgressRing>
-        
+            ></ProgressRing>
+
           </RingsContainer>
           <SummaryCard stepsLeft={appData.today.goals.steps - appData.today.steps} />
         </OverviewLeft>
@@ -160,6 +162,10 @@ function App() {
         <Routes>
           <Route
             path="/"
+            element={<Dashboard appData={appData} error={error} moodHistory={moodHistory} handleMoodSelect={handleMoodSelect} />}
+          />
+          <Route
+            path="/dashboard"
             element={<Dashboard appData={appData} error={error} moodHistory={moodHistory} handleMoodSelect={handleMoodSelect} />}
           />
           <Route path="/settings" element={<Settings />} />

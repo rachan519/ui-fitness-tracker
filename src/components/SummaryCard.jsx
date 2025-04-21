@@ -5,7 +5,7 @@ const SummaryContainer = styled.div`
   align-items: center;
   gap: 16px;
   padding: 16px 24px;
-  background: #FFF5CC; /* Updated to pastel yellow */
+  background: #F3F4F6; /* Updated to pastel yellow */
   border-radius: 12px;
   color: #000;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);

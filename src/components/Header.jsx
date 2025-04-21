@@ -1,7 +1,8 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { ThemeContext } from '../context/ThemeContext';
+import { Sun, Moon } from "lucide-react";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -18,14 +19,6 @@ const HeaderContainer = styled.div`
     gap: 8px;
     height: auto;
   }
-`;
-
-const UserAvatar = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: ${props => props.theme.colors.text};
-  cursor: pointer;
 `;
 
 const Dropdown = styled.div`
@@ -48,7 +41,11 @@ const ThemeToggleContainer = styled.div`
   gap: 8px;
   margin-top: 16px;
 `;
-
+const HeaderToggle = styled.button`
+  background: transparent;
+  border: none;
+  outline: none;
+`;
 const ThemeButton = styled.button`
   background: ${props => props.active ? props.theme.colors.accent : 'transparent'};
   color: ${props => props.active ? 'white' : props.theme.colors.text};
@@ -60,13 +57,36 @@ const ThemeButton = styled.button`
 function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [greeting, setGreeting] = useState("");
+  const [name, setName] = useState("Rachandeep");
+
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good morning");
+    else if (hour < 18) setGreeting("Good afternoon");
+    else setGreeting("Good evening");
+  }, []);
 
   return (
     <HeaderContainer>
-      <h1 style={{ fontSize: '24px' }}>Fitness Tracker</h1>
+      <h2 className="text-base font-semibold leading-tight">
+        {greeting}, <span className="text-cyan-400">{name}</span>!
+      </h2>
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <UserAvatar onClick={() => setIsDropdownOpen(!isDropdownOpen)} />
         <span>{format(new Date(), 'MMMM d, yyyy')}</span>
+        <HeaderToggle onClick={() => toggleTheme(theme === "dark" ? 'light': 'dark')}>
+          {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+
+        </HeaderToggle>
+
+        <img
+          src="https://i.pravatar.cc/40"
+          alt="Profile"
+          className="rounded-full w-8 h-8"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        />
+
         <Dropdown isOpen={isDropdownOpen}>
           <h4>Theme</h4>
           <ThemeToggleContainer>
